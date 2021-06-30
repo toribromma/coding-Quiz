@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="container dark">
+      <h1>Coding Quiz</h1>
+      <div class="row">
+        <div class="col">Dark Mode</div>
+        <label class="switch col">
+          <input type="checkbox" id="theme-switcher" />
+          <span class="slider round"></span>
+        </label>
+        <div class="col">Light Mode</div>
+      </div>
+      <button onclick="startQuiz()">Click here to start quiz</button>
+      <h1 class="time"></h1>
+      <div id="main"></div>
+      <div class="carouselbox" aria-role="questions" aria-label="carousel">
+        <form>
+          <p id="title"></p>
+            <input type="radio" id="choice-1-input" name="choices" value=""/>  
+          <label id="choice-1" for="choice-1"></label><br />
+            <input type="radio" id="choice-2-input" name="choices" value="" />  
+          <label id="choice-2" for="choice-2"></label><br />
+            <input type="radio" id="choice-3-input" name="choices" value="" />  
+          <label id="choice-3" for="choice-3"></label><br />
+          <input type="radio" id="choice-4-input" name="choices" value="" />
+            <label id="choice-4" for="choice-4"></label><br />
+          <div class="buttons">
+            <button id="submit">
+            Submit
+          </button>
+            <button class="next">Next ▶</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </body>
+  <script src="script.js"></script>
+</html>
