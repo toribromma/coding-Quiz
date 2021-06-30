@@ -47,18 +47,6 @@ var questions = [
   },
 ];
 
-// function setFirstQuestion() {
-//   titleDiv.textContent = questions[0].title;
-//   choiceOneLabel.textContent = questions[0].choices[0];
-//   choiceOneInput.setAttribute("value", questions[0].choices[0]);
-//   choiceTwoLabel.textContent = questions[0].choices[1];
-//   choiceTwoInput.setAttribute("value", questions[0].choices[1]);
-//   choiceThreeLabel.textContent = questions[0].choices[2];
-//   choiceThreeInput.setAttribute("value", questions[0].choices[2]);
-//   choiceFourLabel.textContent = questions[0].choices[3];
-//   choiceFourInput.setAttribute("value", questions[0].choices[3]);
-// }
-
 var themeSwitcher = document.querySelector("#theme-switcher");
 var container = document.querySelector(".container");
 var mode = "dark";
@@ -73,11 +61,14 @@ themeSwitcher.addEventListener("click", function () {
   }
 });
 
-function gameOver() {
+function gameOver(extraTime) {
   timeEl.textContent = " ";
   mainEl.textContent = "Game Over!!!";
   carousel.setAttribute("style", "display:none;");
   endTime = true;
+  
+  var totalScore = extraTime + score;
+  console.log(totalScore);
 }
 
 function checkAnswer(event, answers) {
@@ -179,7 +170,9 @@ function startQuiz() {
     carousel.setAttribute("style", "display:block;");
     if (totalTime === 0 || endTime === true) {
       clearInterval(timerInterval);
-      gameOver();
+      var extraTime = totalTime
+      console.log(extraTime);
+      gameOver(extraTime);
     }
   }, 1000);
 
