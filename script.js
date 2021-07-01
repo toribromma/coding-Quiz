@@ -22,6 +22,7 @@ var next = carousel.querySelector(".next");
 var prev = carousel.querySelector(".prev");
 var nameInput = document.getElementById("name");
 var viewButton = document.getElementById("view");
+var start = document.getElementById("start");
 var index = 0;
 var currentQuestion;
 var currentAnswer;
@@ -139,6 +140,7 @@ themeSwitcher.addEventListener("click", function () {
 });
 
 function gameOver() {
+  start.setAttribute("style", "display: block;");
   timeEl.textContent = " ";
   mainEl.textContent = "Game Over!!!";
   carousel.setAttribute("style", "display:none;");
@@ -254,6 +256,9 @@ next.onclick = function (event) {
 
 function startQuiz() {
   next.setAttribute("style", "display: none;");
+  start.setAttribute("style", "display: none;");
+
+  
   score = 0;
   navigate(0);
   console.log("hi");

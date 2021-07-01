@@ -129,7 +129,7 @@ input:checked + .slider:before {
   cursor: pointer;
   display: flex;
   margin: 0 auto;
-  font-size: 30px;
+  /* font-size: 20px; */
 }
 
 .next,
@@ -155,7 +155,7 @@ input:checked + .slider:before {
 }
 
 #main, .time {
-  font-size: 50px;
+  font-size: 20px;
   text-align: center;
 }
 
@@ -183,7 +183,7 @@ tr,
 td,
 th,
 table {
-  padding: 5px;
+  padding: 3px;
 }
 
 button {
@@ -193,6 +193,6 @@ button {
 }
 
 input {
- padding: 10px;
+ padding: 5px;
  margin: 5px;
 }
