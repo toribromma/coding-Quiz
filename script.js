@@ -11,13 +11,90 @@ var choiceOneInput = document.getElementById("choice-1-input");
 var choiceFourInput = document.getElementById("choice-4-input");
 var submitButton = document.getElementById("submit");
 var carousel = document.querySelector(".carouselbox");
+var modalEl = document.querySelector("#modal-container");
+var modalElTwo = document.querySelector("#modal-container-2");
+var table = document.querySelector("#table");
+var scoreEl = document.querySelector("#score");
+var closeEl = document.querySelector(".close");
+var closeElTwo = document.querySelector(".close2");
+var saveBtn = document.querySelector("#save");
 var next = carousel.querySelector(".next");
 var prev = carousel.querySelector(".prev");
+var nameInput = document.getElementById("name");
+var viewButton = document.getElementById("view");
 var index = 0;
 var currentQuestion;
 var currentAnswer;
 var score = 0;
 var endTime = false;
+var totalScore = 0;
+var extraTime = 0;
+
+console.log(2+2)
+
+function showHighScores() {
+  var highScores = JSON.parse(localStorage.getItem("scores"));
+
+  if (!highScores) {
+    return null;
+  } else {
+    highScores = highScores.sort(function (a, b) {
+      return parseFloat(b.score) - parseFloat(a.score);
+    });
+
+    var thArray = ["name", "score"];
+    var tableDiv = document.createElement("table");
+    var trDivOne = document.createElement("tr");
+
+    for (let index = 0; index < thArray.length; index++) {
+      const th = thArray[index];
+      var thDiv = document.createElement("td");
+      thDiv.textContent = th;
+      trDivOne.appendChild(thDiv);
+    }
+
+    tableDiv.append(trDivOne);
+    //need to make it for less than 3
+    for (let index = 0; index < highScores.length; index++) {
+      const name = highScores[index].name;
+      const score = highScores[index].score;
+
+      var tdDiv = document.createElement("td");
+      var tdDiv2 = document.createElement("td");
+      var trDivTwo = document.createElement("tr");
+
+      tdDiv.textContent = name;
+      tdDiv2.textContent = score;
+
+      trDivTwo.appendChild(tdDiv);
+      trDivTwo.appendChild(tdDiv2);
+      tableDiv.append(trDivTwo);
+    }
+
+    console.log(tableDiv);
+    table.textContent = "";
+    table.appendChild(tableDiv);
+  }
+}
+
+showHighScores();
+
+function close(event) {
+  modalEl.style.display = "none";
+}
+
+function close2(event) {
+  modalElTwo.style.display = "none";
+}
+
+closeEl.addEventListener("click", close);
+closeElTwo.addEventListener("click", close2);
+
+viewButton.addEventListener("click", function (event) {
+  event.preventDefault();
+
+  modalElTwo.setAttribute("style", "display: block;");
+});
 
 var questions = [
   {
@@ -31,19 +108,19 @@ var questions = [
     answer: "parentheses",
   },
   {
-    title: "The condition in an if / else statement is enclosed within ____.",
-    choices: ["quotes", "curly brackets", "parentheses", "square brackets"],
-    answer: "parentheses",
+    title: "What is the capital of California?",
+    choices: ["Sacramento", "San Francisco", "Los Angeles", "Stockton"],
+    answer: "Sacramento",
   },
   {
-    title: "The condition in an if / else statement is enclosed within ____.",
-    choices: ["quotes", "curly brackets", "parentheses", "square brackets"],
-    answer: "parentheses",
+    title: "What does console.log('2' + '2') show?",
+    choices: ["2", "22", "222", "4"],
+    answer: "22",
   },
   {
-    title: "Commonly used data types DO NOT include:",
-    choices: ["strings", "booleans", "alerts", "numbers"],
-    answer: "alerts",
+    title: "Which one of these is not an element",
+    choices: ["div", "heading", "img", "var"],
+    answer: "var",
   },
 ];
 
@@ -61,18 +138,47 @@ themeSwitcher.addEventListener("click", function () {
   }
 });
 
-function gameOver(extraTime) {
+function gameOver() {
   timeEl.textContent = " ";
   mainEl.textContent = "Game Over!!!";
   carousel.setAttribute("style", "display:none;");
   endTime = true;
-  
-  var totalScore = extraTime + score;
-  console.log(totalScore);
+
+  totalScore = parseInt(extraTime + score);
+  console.log("1st total score is: " + totalScore);
+
+  modalEl.style.display = "block";
+  scoreEl.textContent = "Your score is " + totalScore + "!";
 }
 
+saveBtn.addEventListener("click", function (event) {
+  event.preventDefault();
+  // var totalScore = scoreEl.textContent;
+  var name = nameInput;
+  // console.log(name.value);
+  // console.log("total score is: " + totalScore);
+
+  var player = {
+    name: name.value.trim(),
+    score: totalScore,
+  };
+
+  var getHighScores = JSON.parse(localStorage.getItem("scores"));
+
+  if (getHighScores) {
+    getHighScores.push(player);
+    localStorage.setItem("scores", JSON.stringify(getHighScores));
+  } else {
+    var highScoresArray = [];
+    highScoresArray.push(player);
+    localStorage.setItem("scores", JSON.stringify(highScoresArray));
+  }
+  showHighScores();
+  close();
+});
+
 function checkAnswer(event, answers) {
-  next.setAttribute("style", "display: block;")
+  next.setAttribute("style", "display: block;");
   event.preventDefault();
 
   var choices = [
@@ -81,46 +187,40 @@ function checkAnswer(event, answers) {
     choiceThreeInput,
     choiceFourInput,
   ];
-  console.log(choices);
+
+  // console.log(choices);
 
   var answers = [];
   questions.forEach((element) => {
     answers.push(element.answer);
   });
-  console.log(answers);
+  // console.log(answers);
+
+  if (
+    choices[0].checked === false &&
+    choices[1].checked === false &&
+    choices[2].checked === false &&
+    choices[3].checked === false
+  ) {
+    score = score - 15;
+  }
 
   for (let index = 0; index < choices.length; index++) {
     const choice = choices[index];
-    // console.log(choice.checked);
-    // console.log(choice.value);
-    // console.log(answers);
-    // if (answers.indexOf(choice) === -1 && choice.checked === true) {
-    //   score = score - 15;
-    //   console.log(score);
-    // }
 
     if (choice.checked === true && answers.indexOf(choice.value) != -1) {
       score = score + 15;
-      console.log(score);
+      // console.log(score);
     } else if (
       choice.checked === true &&
       answers.indexOf(choice.value) === -1
     ) {
       score = score - 15;
-      console.log(score);
+      // console.log(score);
     }
-
-
-
-    // if (choice.checked = true && choice.value !== currentAnswer ) {
-    //   score = score - 5;
-    //   console.log(score);
-    // }
-
-    // checkAnswer(currentAnswer, choices)
   }
 
-  submitButton.setAttribute("style", "display: none;")  
+  submitButton.setAttribute("style", "display: none;");
 }
 
 function navigate(direction) {
@@ -146,18 +246,15 @@ function navigate(direction) {
 next.onclick = function (event) {
   event.preventDefault();
   event.stopPropagation();
-  submitButton.setAttribute("style", "display: block;")
-  next.setAttribute("style", "display: none;")
+  submitButton.setAttribute("style", "display: block;");
+  next.setAttribute("style", "display: none;");
 
   navigate(1);
 };
 
 function startQuiz() {
-  // Create the countdown timer.
-  // setFirstQuestion();
-  
   next.setAttribute("style", "display: none;");
-  
+  score = 0;
   navigate(0);
   console.log("hi");
   endTime = false;
@@ -170,12 +267,11 @@ function startQuiz() {
     carousel.setAttribute("style", "display:block;");
     if (totalTime === 0 || endTime === true) {
       clearInterval(timerInterval);
-      var extraTime = totalTime
-      console.log(extraTime);
-      gameOver(extraTime);
+      extraTime = totalTime;
+      console.log("Extra time is :" + extraTime);
+      gameOver();
     }
   }, 1000);
-
 }
 
 submitButton.addEventListener("click", checkAnswer);
