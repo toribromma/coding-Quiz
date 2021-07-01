@@ -129,6 +129,13 @@ var themeSwitcher = document.querySelector("#theme-switcher");
 var container = document.querySelector(".container");
 var mode = "dark";
 
+var choices = [
+  choiceOneInput,
+  choiceTwoInput,
+  choiceThreeInput,
+  choiceFourInput,
+];
+
 themeSwitcher.addEventListener("click", function () {
   if (mode === "dark") {
     mode = "light";
@@ -183,13 +190,6 @@ function checkAnswer(event, answers) {
   next.setAttribute("style", "display: block;");
   event.preventDefault();
 
-  var choices = [
-    choiceOneInput,
-    choiceTwoInput,
-    choiceThreeInput,
-    choiceFourInput,
-  ];
-
   // console.log(choices);
 
   var answers = [];
@@ -213,12 +213,15 @@ function checkAnswer(event, answers) {
     if (choice.checked === true && answers.indexOf(choice.value) != -1) {
       score = score + 15;
       // console.log(score);
+      console.log(choice);
+      console.log(choice.nextElementSibling)
+      choice.nextElementSibling.setAttribute("style", "background-color: green;")
     } else if (
       choice.checked === true &&
       answers.indexOf(choice.value) === -1
     ) {
       score = score - 15;
-      // console.log(score);
+      choice.nextElementSibling.setAttribute("style", "background-color: red;")
     }
   }
 
@@ -247,7 +250,12 @@ function navigate(direction) {
 
 next.onclick = function (event) {
   event.preventDefault();
-  event.stopPropagation();
+
+  choices.forEach(choice => {
+    choice.nextElementSibling.setAttribute("style", "background-color: none; color: white;")
+  });
+  
+
   submitButton.setAttribute("style", "display: block;");
   next.setAttribute("style", "display: none;");
 
@@ -268,7 +276,7 @@ function startQuiz() {
 
   var timerInterval = setInterval(function () {
     totalTime--;
-    timeEl.textContent = totalTime + " seconds left for quiz.";
+    timeEl.textContent = "Time: " + totalTime;
     carousel.setAttribute("style", "display:block;");
     if (totalTime === 0 || endTime === true) {
       clearInterval(timerInterval);
