@@ -1,78 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" type="text/css" href="styles.css" />
-    <title>Coding Quiz</title>
-  </head>
-  <body>
-    <div class="container dark">
-      <h1 class="time"></h1>
-      <button id="view">
-        View High Score
-      </button>
-      <h1 id="firstHeading">Coding Quiz</h1>
-      <div class="row">
-        <div class="col">Dark Mode</div>
-        <label class="switch col">
-          <input type="checkbox" id="theme-switcher" />
-          <span class="slider round"></span>
-        </label>
-        <div class="col">Light Mode</div>
-      </div>
-      <button id="start" onclick="startQuiz()">Click here to start quiz</button>
 
-      <div id="main"></div>
-      <div class="carouselbox" aria-role="questions" aria-label="carousel">
-          <p id="title"></p>
-            <input type="radio" id="choice-1-input" name="choices" value="" />  
-          <label id="choice-1" for="choice-1"></label><br />
-            <input type="radio" id="choice-2-input" name="choices" value="" />  
-          <label id="choice-2" for="choice-2"></label><br />
-            <input type="radio" id="choice-3-input" name="choices" value="" />  
-          <label id="choice-3" for="choice-3"></label><br />
-          <input type="radio" id="choice-4-input" name="choices" value="" />
-            <label id="choice-4" for="choice-4"></label><br />
-          <div class="buttons">
-            <button id="submit">Submit</button>
-            <button class="next">Next ▶</button>
-          </div>
-        </form>
-      </div>
-      <div id="modal-container" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-              <span class="close">&times;</span>
-              <h2 id="score">
-              </h2>
-            </div>
-            <div class="modal-body">
-              <h3>Please enter your name:</h3>
-              <input id="name"></input>
-              <label for="name"></label>
-              <div>
-                <button id="save">Save</button>
-              </div>
-            </div>
-          </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="styles.css" />
+  <title>Coding Quiz</title>
+</head>
+<body>
+  <div class="container dark">
+    <h1 class="time"></h1>
+    <button id="view">
+      View High Score
+    </button>
+    <h1 id="firstHeading">Coding Quiz</h1>
+    <div class="row">
+      <div class="col">Dark Mode</div>
+      <label class="switch col">
+        <input type="checkbox" id="theme-switcher" />
+        <span class="slider round"></span>
+      </label>
+      <div class="col">Light Mode</div>
+    </div>
+    <button id="start" onclick="startQuiz()">Click here to start quiz</button>
+    <div id="main"></div>
+    <div class="carouselbox" aria-role="questions" aria-label="carousel">
+      <p id="title"></p>
+      <form id="radioForm">
+         <div class="radioButton">
+          <input type="radio" id="choice-1-input" name="choices" value="" />
+          <label id="choice-1" for="choice-1"></label>
         </div>
-        <div id="modal-container-2" class="modal2">
-          <div class="modal-content">
-              <div class="modal-header">
-                <span class="close2">&times;</span>
-                <h2> High Scores
-                </h2>
-              </div>
-              <div class="modal-body" id="table">
-  
-              </div>
-            </div>
+        <div class="radioButton">
+          <input type="radio" id="choice-2-input" name="choices" value=""/>
+          <label id="choice-2" for="choice-2"></label>
+        </div>
+        <div class="radioButton">
+          <input type="radio" id="choice-3-input" name="choices" value=""/>
+          <label id="choice-3" for="choice-3"></label>
+        </div>
+        <div class="radioButton">
+          <input type="radio" id="choice-4-input" name="choices" value=""/>   
+          <label id="choice-4" for="choice-4"></label>
+        </div>
+        <div class="buttons">
+          <button id="submit">Submit</button>
+          <button class="next">Next ▶</button>
+        </div>
+      </form>
+    </div>
+    <div id="modal-container" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <span class="close">&times;</span>
+          <h2 id="score">
+          </h2>
+        </div>
+        <div class="modal-body">
+          <h3>Please enter your name:</h3>
+          <input id="name"></input>
+          <label for="name"></label>
+          <div>
+            <button id="save">Save</button>
           </div>
         </div>
       </div>
     </div>
-  </body>
-  <script src="script.js"></script>
+    <div id="modal-container-2" class="modal2">
+      <div class="modal-content">
+        <div class="modal-header">
+          <span class="close2">&times;</span>
+          <h2>High Scores</h2>
+        </div>
+        <div class="modal-body" id="table">
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+  </div>
+</body>
+<script src="script.js"></script>
+
 </html>

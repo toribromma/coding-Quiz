@@ -162,11 +162,8 @@ function gameOver() {
 
 saveBtn.addEventListener("click", function (event) {
   event.preventDefault();
-  // var totalScore = scoreEl.textContent;
-  var name = nameInput;
-  // console.log(name.value);
-  // console.log("total score is: " + totalScore);
 
+  var name = nameInput;
   var player = {
     name: name.value.trim(),
     score: totalScore,
@@ -187,34 +184,29 @@ saveBtn.addEventListener("click", function (event) {
 });
 
 function checkAnswer(event, answers) {
-  next.setAttribute("style", "display: block;");
   event.preventDefault();
-
-  // console.log(choices);
-
-  var answers = [];
-  questions.forEach((element) => {
-    answers.push(element.answer);
-  });
-  // console.log(answers);
-
   if (
     choices[0].checked === false &&
     choices[1].checked === false &&
     choices[2].checked === false &&
     choices[3].checked === false
   ) {
-    score = score - 15;
+    return null;
   }
+
+
+  next.setAttribute("style", "display: block;");
+
+  var answers = [];
+  questions.forEach((element) => {
+    answers.push(element.answer);
+  });
 
   for (let index = 0; index < choices.length; index++) {
     const choice = choices[index];
 
     if (choice.checked === true && answers.indexOf(choice.value) != -1) {
       score = score + 15;
-      // console.log(score);
-      console.log(choice);
-      console.log(choice.nextElementSibling)
       choice.nextElementSibling.setAttribute("style", "background-color: green;")
     } else if (
       choice.checked === true &&
@@ -236,7 +228,6 @@ function navigate(direction) {
   }
 
   currentQuestion = questions[index];
-
   titleDiv.textContent = currentQuestion.title;
   choiceOneLabel.textContent = currentQuestion.choices[0];
   choiceOneInput.setAttribute("value", currentQuestion.choices[0]);
