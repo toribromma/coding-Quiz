@@ -17,7 +17,7 @@ li {
 
 li a {
   display: block;
-  text-align: center;
+  text-align: center; 
   padding: 14px 16px;
   text-decoration: none;
 }
@@ -206,12 +206,18 @@ table {
 }
 
 button {
-  /* margin: 40px auto; */
-  padding: 6px;
+  padding: 8px;
   border-radius: 8px;
-  /* font-size: 12px; */
+  box-shadow: black 2px 1px 1px;
+  cursor: pointer;
+  border: 2px gray solid;
+  font-weight: 300;
 }
 
 .buttons {
   margin-top: 20px;
+}
+
+#save {
+  margin: 3px;
 }

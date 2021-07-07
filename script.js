@@ -28,8 +28,9 @@ var currentQuestion;
 var currentAnswer;
 var score = 0;
 var endTime = false;
-var totalScore = 0;
+var totalScore = null;
 var extraTime = 0;
+
 
 console.log(2+2)
 
@@ -72,7 +73,7 @@ function showHighScores() {
       tableDiv.append(trDivTwo);
     }
 
-    console.log(tableDiv);
+    // console.log(tableDiv);
     table.textContent = "";
     table.appendChild(tableDiv);
   }
@@ -146,18 +147,19 @@ themeSwitcher.addEventListener("click", function () {
   }
 });
 
-function gameOver() {
+async function gameOver() {
   start.setAttribute("style", "display: block;");
   timeEl.textContent = " ";
   mainEl.textContent = "Game Over!!!";
   carousel.setAttribute("style", "display:none;");
   endTime = true;
-
-  totalScore = parseInt(extraTime + score);
-  console.log("1st total score is: " + totalScore);
-
   modalEl.style.display = "block";
-  scoreEl.textContent = "Your score is " + totalScore + "!";
+  if (totalScore === null) {
+    scoreEl.textContent = "Calculating Score...";
+  } else {
+    scoreEl.textContent = "Your score is " + totalScore + "!";
+  }
+  
 }
 
 saveBtn.addEventListener("click", function (event) {
@@ -260,7 +262,7 @@ function startQuiz() {
   
   score = 0;
   navigate(0);
-  console.log("hi");
+  // console.log("hi");
   endTime = false;
   mainEl.textContent = "";
   var totalTime = 75;
@@ -272,7 +274,7 @@ function startQuiz() {
     if (totalTime === 0 || endTime === true) {
       clearInterval(timerInterval);
       extraTime = totalTime;
-      console.log("Extra time is :" + extraTime);
+      totalScore = parseInt(extraTime + score);
       gameOver();
     }
   }, 1000);
