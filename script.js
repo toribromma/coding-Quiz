@@ -262,7 +262,8 @@ function startQuiz() {
   
   score = 0;
   navigate(0);
-  // console.log("hi");
+  extraTime = 0;
+  totalScore = null;
   endTime = false;
   mainEl.textContent = "";
   var totalTime = 75;

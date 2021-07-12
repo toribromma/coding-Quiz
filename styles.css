@@ -1,7 +1,7 @@
 body {
   display: block;
   margin: 0px auto;
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
 }
 
 ul {
@@ -17,7 +17,7 @@ li {
 
 li a {
   display: block;
-  text-align: center; 
+  text-align: center;
   padding: 14px 16px;
   text-decoration: none;
 }
@@ -39,8 +39,8 @@ li a {
 
 /* Light Mode */
 .light {
-  background-color: #2196f3;
-  color: white;
+  background-color: #e9c46a;
+  color: #264653;
   height: 100vh;
 }
 
@@ -50,6 +50,10 @@ li a {
 
 .light li a:hover {
   background-color: rgb(29, 128, 210);
+}
+
+.light .modal-header {
+  background-color: #2a9d8f;
 }
 
 /* Styling the Switch button */
@@ -93,11 +97,11 @@ li a {
 }
 
 input:checked + .slider {
-  background-color: rgb(29, 128, 210);
+  background-color: #264653;
 }
 
 input:focus + .slider {
-  box-shadow: 0 0 1px rgb(29, 128, 210);
+  box-shadow: 0 0 1px #264653;
 }
 
 input:checked + .slider:before {
@@ -123,6 +127,11 @@ input:checked + .slider:before {
 .col {
   margin: 20px;
 }
+
+.close2, .close {
+  cursor: pointer;
+}
+
 
 .carouselbox {
   width: 300px;
@@ -166,6 +175,8 @@ input:checked + .slider:before {
 #main {
   font-size: 20px;
   text-align: center;
+  padding: 15px;
+  margin: 10px auto;
 }
 
 .time {
@@ -177,6 +188,7 @@ input:checked + .slider:before {
   padding: 2px 16px;
   background-color: #586994;
   color: white;
+  border-radius: 20px 20px 0px 0px;
 }
 
 .modal-body {
@@ -188,13 +200,14 @@ input:checked + .slider:before {
   margin: auto;
   padding: 0;
   border: 1px solid #888;
+  border-radius: 20px;
   width: 80%;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 #modal-container-2 {
   position: absolute;
-  top: 0;
+  top: 40px;
   width: 100%;
 }
 
@@ -208,10 +221,13 @@ table {
 button {
   padding: 8px;
   border-radius: 8px;
-  box-shadow: black 2px 1px 1px;
   cursor: pointer;
-  border: 2px gray solid;
   font-weight: 300;
+  color: #264653;
+}
+
+.light button {
+  background-color: #f4a261;
 }
 
 .buttons {
