@@ -30,6 +30,7 @@ var score = 0;
 var endTime = false;
 var totalScore = null;
 var extraTime = 0;
+var totalTime = 75;
 
 function showHighScores() {
   var highScores = JSON.parse(localStorage.getItem("scores"));
@@ -127,24 +128,23 @@ var themeSwitcher = document.querySelector("#theme-switcher");
 var container = document.querySelector(".container");
 var mode = "dark";
 
-var startingMode = JSON.parse(localStorage.getItem("mode"));
-console.log(startingMode);
-container.setAttribute("class", startingMode);
+// var startingMode = JSON.parse(localStorage.getItem("mode"));
+// console.log(startingMode);
+// container.setAttribute("class", startingMode);
 
-let positionOfSwitcher = document.getElementById("theme-switcher");
-let positionOfSlider = document.getElementsByTagName("slider round");
+// let positionOfSwitcher = document.getElementById("theme-switcher");
+// let positionOfSlider = document.getElementsByTagName("slider round");
 // console.log(positionOfSlider)
 
+// if (mode === "light") {
+// positionOfSwitcher.setAttribute("checked", true);
+// positionOfSlider.style.transform = "translateX(26px)"
+// console.log("hi");
+// } else {
+// positionOfSwitcher.setAttribute("checked", false);
+// positionOfSlider.style.transform = "translateX(-26px)"
 
-if (mode === "light") {
-  // positionOfSwitcher.setAttribute("checked", true);
-  // positionOfSlider.style.transform = "translateX(26px)"
-  console.log("hi");
-} else {
-  // positionOfSwitcher.setAttribute("checked", false);
-  // positionOfSlider.style.transform = "translateX(-26px)"
-
-}
+// }
 
 var choices = [
   choiceOneInput,
@@ -157,11 +157,11 @@ themeSwitcher.addEventListener("click", function () {
   if (mode === "dark") {
     mode = "light";
     container.setAttribute("class", "light");
-    localStorage.setItem("mode", JSON.stringify("light"));
+    // localStorage.setItem("mode", JSON.stringify("light"));
   } else {
     mode = "dark";
     container.setAttribute("class", "dark");
-    localStorage.setItem("mode", JSON.stringify("dark"));
+    // localStorage.setItem("mode", JSON.stringify("dark"));
   }
 });
 
@@ -233,7 +233,7 @@ function checkAnswer(event, answers) {
       choice.checked === true &&
       answers.indexOf(choice.value) === -1
     ) {
-      score = score - 15;
+      totalTime = totalTime - 15;
       choice.nextElementSibling.setAttribute("style", "background-color: red;");
     }
   }
@@ -286,19 +286,23 @@ function startQuiz() {
   totalScore = null;
   endTime = false;
   mainEl.textContent = "";
-  var totalTime = 75;
 
   var timerInterval = setInterval(function () {
     totalTime--;
     timeEl.textContent = "Time: " + totalTime;
     carousel.setAttribute("style", "display:block;");
-    if (totalTime === 0 || endTime === true) {
+    if (totalTime <= 0 || endTime === true) {
       clearInterval(timerInterval);
-      extraTime = totalTime;
+      if (totalTime < 0) {
+        extraTime === 0;
+      } else {
+        extraTime = totalTime;
+      }
+
       totalScore = parseInt(extraTime + score);
       gameOver();
     }
-  }, 1000);
+  }, 100);
 }
 
 submitButton.addEventListener("click", checkAnswer);
