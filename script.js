@@ -277,6 +277,7 @@ next.onclick = function (event) {
 };
 
 function startQuiz() {
+totalTime = 75;
   next.setAttribute("style", "display: none;");
   start.setAttribute("style", "display: none;");
 
@@ -302,7 +303,7 @@ function startQuiz() {
       totalScore = parseInt(extraTime + score);
       gameOver();
     }
-  }, 100);
+  }, 1000);
 }
 
 submitButton.addEventListener("click", checkAnswer);
