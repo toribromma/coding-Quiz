@@ -31,9 +31,6 @@ var endTime = false;
 var totalScore = null;
 var extraTime = 0;
 
-
-console.log(2+2)
-
 function showHighScores() {
   var highScores = JSON.parse(localStorage.getItem("scores"));
 
@@ -130,6 +127,25 @@ var themeSwitcher = document.querySelector("#theme-switcher");
 var container = document.querySelector(".container");
 var mode = "dark";
 
+var startingMode = JSON.parse(localStorage.getItem("mode"));
+console.log(startingMode);
+container.setAttribute("class", startingMode);
+
+let positionOfSwitcher = document.getElementById("theme-switcher");
+let positionOfSlider = document.getElementsByTagName("slider round");
+// console.log(positionOfSlider)
+
+
+if (mode === "light") {
+  // positionOfSwitcher.setAttribute("checked", true);
+  // positionOfSlider.style.transform = "translateX(26px)"
+  console.log("hi");
+} else {
+  // positionOfSwitcher.setAttribute("checked", false);
+  // positionOfSlider.style.transform = "translateX(-26px)"
+
+}
+
 var choices = [
   choiceOneInput,
   choiceTwoInput,
@@ -141,9 +157,11 @@ themeSwitcher.addEventListener("click", function () {
   if (mode === "dark") {
     mode = "light";
     container.setAttribute("class", "light");
+    localStorage.setItem("mode", JSON.stringify("light"));
   } else {
     mode = "dark";
     container.setAttribute("class", "dark");
+    localStorage.setItem("mode", JSON.stringify("dark"));
   }
 });
 
@@ -159,7 +177,6 @@ async function gameOver() {
   } else {
     scoreEl.textContent = "Your score is " + totalScore + "!";
   }
-  
 }
 
 saveBtn.addEventListener("click", function (event) {
@@ -196,7 +213,6 @@ function checkAnswer(event, answers) {
     return null;
   }
 
-
   next.setAttribute("style", "display: block;");
 
   var answers = [];
@@ -209,13 +225,16 @@ function checkAnswer(event, answers) {
 
     if (choice.checked === true && answers.indexOf(choice.value) != -1) {
       score = score + 15;
-      choice.nextElementSibling.setAttribute("style", "background-color: green;")
+      choice.nextElementSibling.setAttribute(
+        "style",
+        "background-color: green;"
+      );
     } else if (
       choice.checked === true &&
       answers.indexOf(choice.value) === -1
     ) {
       score = score - 15;
-      choice.nextElementSibling.setAttribute("style", "background-color: red;")
+      choice.nextElementSibling.setAttribute("style", "background-color: red;");
     }
   }
 
@@ -244,10 +263,12 @@ function navigate(direction) {
 next.onclick = function (event) {
   event.preventDefault();
 
-  choices.forEach(choice => {
-    choice.nextElementSibling.setAttribute("style", "background-color: none; color: white;")
+  choices.forEach((choice) => {
+    choice.nextElementSibling.setAttribute(
+      "style",
+      "background-color: none; color: white;"
+    );
   });
-  
 
   submitButton.setAttribute("style", "display: block;");
   next.setAttribute("style", "display: none;");
@@ -259,7 +280,6 @@ function startQuiz() {
   next.setAttribute("style", "display: none;");
   start.setAttribute("style", "display: none;");
 
-  
   score = 0;
   navigate(0);
   extraTime = 0;
