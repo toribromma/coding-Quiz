@@ -25,12 +25,12 @@ var viewButton = document.getElementById("view");
 var start = document.getElementById("start");
 var index = 0;
 var currentQuestion;
-var currentAnswer;
 var score = 0;
 var endTime = false;
 var totalScore = null;
 var extraTime = 0;
 var totalTime = 75;
+url = "https://opentdb.com/api.php?amount=5&category=18&difficulty=easy&type=multiple"
 
 //questions object are placed in this array for reference
 let questionsArray = [];
@@ -53,18 +53,20 @@ var choicesLabel = [
 ];
 
 function shuffle(array) {
-  let currentIndex = array.length,  randomIndex;
+  let currentIndex = array.length,
+    randomIndex;
 
   // While there remain elements to shuffle.
   while (currentIndex != 0) {
-
     // Pick a remaining element.
     randomIndex = Math.floor(Math.random() * currentIndex);
     currentIndex--;
 
     // And swap it with the current element.
     [array[currentIndex], array[randomIndex]] = [
-      array[randomIndex], array[currentIndex]];
+      array[randomIndex],
+      array[currentIndex],
+    ];
   }
 
   return array;
@@ -95,10 +97,6 @@ async function fetchQuestions(url) {
     console.log(err);
   }
 }
-
-fetchQuestions(
-  "https://opentdb.com/api.php?amount=10&category=18&difficulty=easy&type=multiple"
-);
 
 function showHighScores() {
   var highScores = JSON.parse(localStorage.getItem("scores"));
@@ -180,6 +178,7 @@ themeSwitcher.addEventListener("click", function () {
 });
 
 async function gameOver() {
+  index = 0
   start.setAttribute("style", "display: block;");
   timeEl.textContent = " ";
   mainEl.textContent = "Game Over!!!";
@@ -216,7 +215,7 @@ saveBtn.addEventListener("click", function (event) {
   close();
 });
 
-function checkAnswer(event, answer) {
+function checkAnswer(event) {
   event.preventDefault();
   if (
     choicesInput[0].checked === false &&
@@ -233,7 +232,9 @@ function checkAnswer(event, answer) {
       choice.checked === true &&
       correctAnswersArray.indexOf(choice.value) != -1
     ) {
+      console.log("Correct!");
       score = score + 15;
+      console.log(score)
       choice.nextElementSibling.setAttribute(
         "style",
         "background-color: green;"
@@ -242,6 +243,8 @@ function checkAnswer(event, answer) {
       choice.checked === true &&
       correctAnswersArray.indexOf(choice.value) === -1
     ) {
+      console.log("NOPE!");
+      console.log(score)
       totalTime = totalTime - 15;
       choice.nextElementSibling.setAttribute("style", "background-color: red;");
     }
@@ -250,25 +253,24 @@ function checkAnswer(event, answer) {
   submitButton.setAttribute("style", "display: none;");
 }
 
-function navigate(direction) {
+function  navigate(direction) {
   index = index + direction;
 
   if (index > questionsArray.length - 1) {
     gameOver();
-    index = 0;
   }
 
   currentQuestion = questionsArray[index];
 
   let choices = [...currentQuestion.incorrect, currentQuestion.correct];
-  shuffle(choices)
+  shuffle(choices);
 
-  titleDiv.textContent = currentQuestion.question;
+  titleDiv.innerHTML = currentQuestion.question;
 
   // setting local choices to html page
 
   choices.forEach((choice, index) => {
-    choicesLabel[index].innerText = choice;
+    choicesLabel[index].innerHTML = choice;
     choicesInput[index].setAttribute("value", choice);
   });
 }
@@ -289,15 +291,22 @@ next.onclick = function (event) {
   navigate(1);
 };
 
-function startQuiz() {
+async function startQuiz() {
+  index = 0
+  questionsArray = [];
+  correctAnswersArray = [];
+
+  await fetchQuestions(
+    url
+  );
   //close all modals and clear all variables before starting to navigate through
   close();
   close2();
   totalTime = 75;
   next.setAttribute("style", "display: none;");
   start.setAttribute("style", "display: none;");
-
   score = 0;
+  index = 0;
   extraTime = 0;
   totalScore = null;
   endTime = false;
@@ -310,13 +319,14 @@ function startQuiz() {
     carousel.setAttribute("style", "display:block;");
     if (totalTime <= 0 || endTime === true) {
       clearInterval(timerInterval);
-      if (totalTime < 0) {
+      if (totalTime <= 0) {
         extraTime === 0;
       } else {
         extraTime = totalTime;
       }
-
+      console.log(extraTime)
       totalScore = parseInt(extraTime + score);
+      console.log(totalScore)
       gameOver();
     }
   }, 1000);
