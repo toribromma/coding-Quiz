@@ -32,6 +32,74 @@ var totalScore = null;
 var extraTime = 0;
 var totalTime = 75;
 
+//questions object are placed in this array for reference
+let questionsArray = [];
+
+//correct answers are checked against checked answers to see if true
+let correctAnswersArray = [];
+
+var choicesInput = [
+  choiceOneInput,
+  choiceTwoInput,
+  choiceThreeInput,
+  choiceFourInput,
+];
+
+var choicesLabel = [
+  choiceOneLabel,
+  choiceTwoLabel,
+  choiceThreeLabel,
+  choiceFourLabel,
+];
+
+function shuffle(array) {
+  let currentIndex = array.length,  randomIndex;
+
+  // While there remain elements to shuffle.
+  while (currentIndex != 0) {
+
+    // Pick a remaining element.
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    // And swap it with the current element.
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex], array[currentIndex]];
+  }
+
+  return array;
+}
+
+async function fetchQuestions(url) {
+  try {
+    // fetching questions from api
+    response = await fetch(url);
+    const data = await response.json();
+    let questions = data.results;
+
+    questions.forEach((question) => {
+      let questionObject = {
+        correct: String,
+        incorrect: Array,
+        question: String,
+      };
+
+      questionObject.correct = question.correct_answer;
+      questionObject.incorrect = question.incorrect_answers;
+      questionObject.question = question.question;
+
+      questionsArray.push(questionObject);
+      correctAnswersArray.push(questionObject.correct);
+    });
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+fetchQuestions(
+  "https://opentdb.com/api.php?amount=10&category=18&difficulty=easy&type=multiple"
+);
+
 function showHighScores() {
   var highScores = JSON.parse(localStorage.getItem("scores"));
 
@@ -71,7 +139,6 @@ function showHighScores() {
       tableDiv.append(trDivTwo);
     }
 
-    // console.log(tableDiv);
     table.textContent = "";
     table.appendChild(tableDiv);
   }
@@ -96,62 +163,9 @@ viewButton.addEventListener("click", function (event) {
   modalElTwo.setAttribute("style", "display: block;");
 });
 
-var questions = [
-  {
-    title: "Commonly used data types DO NOT include:",
-    choices: ["strings", "booleans", "alerts", "numbers"],
-    answer: "alerts",
-  },
-  {
-    title: "The condition in an if / else statement is enclosed within ____.",
-    choices: ["quotes", "curly brackets", "parentheses", "square brackets"],
-    answer: "parentheses",
-  },
-  {
-    title: "What is the capital of California?",
-    choices: ["Sacramento", "San Francisco", "Los Angeles", "Stockton"],
-    answer: "Sacramento",
-  },
-  {
-    title: "What does console.log('2' + '2') show?",
-    choices: ["2", "22", "222", "4"],
-    answer: "22",
-  },
-  {
-    title: "Which one of these is not an element",
-    choices: ["div", "heading", "img", "var"],
-    answer: "var",
-  },
-];
-
 var themeSwitcher = document.querySelector("#theme-switcher");
 var container = document.querySelector(".container");
 var mode = "dark";
-
-// var startingMode = JSON.parse(localStorage.getItem("mode"));
-// console.log(startingMode);
-// container.setAttribute("class", startingMode);
-
-// let positionOfSwitcher = document.getElementById("theme-switcher");
-// let positionOfSlider = document.getElementsByTagName("slider round");
-// console.log(positionOfSlider)
-
-// if (mode === "light") {
-// positionOfSwitcher.setAttribute("checked", true);
-// positionOfSlider.style.transform = "translateX(26px)"
-// console.log("hi");
-// } else {
-// positionOfSwitcher.setAttribute("checked", false);
-// positionOfSlider.style.transform = "translateX(-26px)"
-
-// }
-
-var choices = [
-  choiceOneInput,
-  choiceTwoInput,
-  choiceThreeInput,
-  choiceFourInput,
-];
 
 themeSwitcher.addEventListener("click", function () {
   if (mode === "dark") {
@@ -202,28 +216,23 @@ saveBtn.addEventListener("click", function (event) {
   close();
 });
 
-function checkAnswer(event, answers) {
+function checkAnswer(event, answer) {
   event.preventDefault();
   if (
-    choices[0].checked === false &&
-    choices[1].checked === false &&
-    choices[2].checked === false &&
-    choices[3].checked === false
-  ) {
-    return null;
-  }
+    choicesInput[0].checked === false &&
+    choicesInput[1].checked === false &&
+    choicesInput[2].checked === false &&
+    choicesInput[3].checked === false
+  )
+    return false;
 
   next.setAttribute("style", "display: block;");
 
-  var answers = [];
-  questions.forEach((element) => {
-    answers.push(element.answer);
-  });
-
-  for (let index = 0; index < choices.length; index++) {
-    const choice = choices[index];
-
-    if (choice.checked === true && answers.indexOf(choice.value) != -1) {
+  choicesInput.forEach((choice) => {
+    if (
+      choice.checked === true &&
+      correctAnswersArray.indexOf(choice.value) != -1
+    ) {
       score = score + 15;
       choice.nextElementSibling.setAttribute(
         "style",
@@ -231,39 +240,43 @@ function checkAnswer(event, answers) {
       );
     } else if (
       choice.checked === true &&
-      answers.indexOf(choice.value) === -1
+      correctAnswersArray.indexOf(choice.value) === -1
     ) {
       totalTime = totalTime - 15;
       choice.nextElementSibling.setAttribute("style", "background-color: red;");
     }
-  }
+  });
 
   submitButton.setAttribute("style", "display: none;");
 }
 
 function navigate(direction) {
   index = index + direction;
-  if (index > questions.length - 1) {
+
+  if (index > questionsArray.length - 1) {
     gameOver();
     index = 0;
   }
 
-  currentQuestion = questions[index];
-  titleDiv.textContent = currentQuestion.title;
-  choiceOneLabel.textContent = currentQuestion.choices[0];
-  choiceOneInput.setAttribute("value", currentQuestion.choices[0]);
-  choiceTwoLabel.textContent = currentQuestion.choices[1];
-  choiceTwoInput.setAttribute("value", currentQuestion.choices[1]);
-  choiceThreeLabel.textContent = currentQuestion.choices[2];
-  choiceThreeInput.setAttribute("value", currentQuestion.choices[2]);
-  choiceFourLabel.textContent = currentQuestion.choices[3];
-  choiceFourInput.setAttribute("value", currentQuestion.choices[3]);
+  currentQuestion = questionsArray[index];
+
+  let choices = [...currentQuestion.incorrect, currentQuestion.correct];
+  shuffle(choices)
+
+  titleDiv.textContent = currentQuestion.question;
+
+  // setting local choices to html page
+
+  choices.forEach((choice, index) => {
+    choicesLabel[index].innerText = choice;
+    choicesInput[index].setAttribute("value", choice);
+  });
 }
 
 next.onclick = function (event) {
   event.preventDefault();
 
-  choices.forEach((choice) => {
+  choicesInput.forEach((choice) => {
     choice.nextElementSibling.setAttribute(
       "style",
       "background-color: none; color: white;"
@@ -277,16 +290,19 @@ next.onclick = function (event) {
 };
 
 function startQuiz() {
-totalTime = 75;
+  //close all modals and clear all variables before starting to navigate through
+  close();
+  close2();
+  totalTime = 75;
   next.setAttribute("style", "display: none;");
   start.setAttribute("style", "display: none;");
 
   score = 0;
-  navigate(0);
   extraTime = 0;
   totalScore = null;
   endTime = false;
   mainEl.textContent = "";
+  navigate(0);
 
   var timerInterval = setInterval(function () {
     totalTime--;

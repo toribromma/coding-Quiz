@@ -207,8 +207,9 @@ input:checked + .slider:before {
 
 #modal-container-2 {
   position: absolute;
-  top: 40px;
-  width: 100%;
+  top: 0px;
+  left: 0px;
+  width: 200px;
 }
 
 tr,
